@@ -1,0 +1,7 @@
+# Backend Python dependencies
+fastapi
+uvicorn
+requests
+PyPDF2
+python-dotenv
+llama-api-client
