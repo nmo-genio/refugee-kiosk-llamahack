@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import SOSModal from './SOSModal';
+import ChatWithAI from './ChatWithAI';
 
 
 // All translations for supported languages
@@ -523,31 +524,37 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
             onSend={option => console.log('Sending SOS alert:', option)}
             translations={t.sosModal}
           />
-  </div>
-)}
+        </div>
+      )}
 
-         {/* Chat Modal */}
+      {/* Chat Modal */}
       {showChatModal && capturedImage && (
-   <div className="fixed inset-0 z-50 flex items-center justify-center">
-     <div className="absolute inset-0 bg-black bg-opacity-50" />
-     <div className="relative bg-white p-8 rounded-xl shadow-lg max-w-lg w-full flex flex-col items-center">
-       <h3 className="text-2xl font-bold mb-4">RKioskAI</h3>
-       <img src={capturedImage} alt="Captured" className="w-full max-w-xs rounded mb-6" />
-       <div className="bg-gray-100 rounded p-4 mb-4 w-full text-center text-gray-600">
-         (AI chat will go here...)
-       </div>
-       <button
-         className="px-6 py-2 bg-blue-500 text-white rounded-lg font-semibold"
-         onClick={() => {
-           setShowChatModal(false);
-           setCapturedImage(null);
-         }}
-       >
-         Close Chat
-       </button>
-     </div>
-   </div>
- )}
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black bg-opacity-50" />
+          <div className="relative bg-white p-8 rounded-xl shadow-lg max-w-lg w-full flex flex-col items-center">
+            <h3 className="text-2xl font-bold mb-4">RKioskAI</h3>
+            <img src={capturedImage} alt="Captured" className="w-full max-w-xs rounded mb-6" />
+            <div className="bg-gray-100 rounded p-4 mb-4 w-full text-center text-gray-600">
+              <ChatWithAI 
+                image={capturedImage} 
+                onClose={() => { 
+                  setShowChatModal(false); 
+                  setCapturedImage(null); 
+                }} 
+              />
+            </div>
+            <button
+              className="px-6 py-2 bg-blue-500 text-white rounded-lg font-semibold"
+              onClick={() => {
+                setShowChatModal(false);
+                setCapturedImage(null);
+              }}
+            >
+              Close Chat
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
