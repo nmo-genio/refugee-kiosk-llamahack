@@ -9,6 +9,7 @@ from llama_api_client import LlamaAPIClient
 from io import BytesIO
 
 from PyTypes import FormDetails, ImageType
+from sematicSearch import semantic_search
 
 load_dotenv()
 api_key = os.environ.get("LLAMA_API_KEY")
@@ -265,17 +266,17 @@ def chatWithLLAMA(propmt, **kwargs):
             }
         )
 
-    # messages.append(
-    #     {
-    #         "role": "user",
-    #         "content": [
-    #             {
-    #                 "type": "text",
-    #                 "text": f"{semantic_search(propmt)}",
-    #             },
-    #         ],
-    #     }
-    # )
+    messages.append(
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"{semantic_search(propmt)}",
+                },
+            ],
+        }
+    )
 
     if "PreviousMessages" in kwargs:
         previous_messages = kwargs["PreviousMessages"]

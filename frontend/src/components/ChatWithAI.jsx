@@ -1,6 +1,8 @@
 // frontend/src/components/ChatWithAI.jsx
 import { useState, useEffect, useRef } from 'react';
 import { uploadImage, sendChatMessage, checkHealth } from '../services/api';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 const ChatWithAI = ({ image, selectedLanguage, sessionId, onClose }) => {
   const [message, setMessage] = useState('');
@@ -22,7 +24,7 @@ const ChatWithAI = ({ image, selectedLanguage, sessionId, onClose }) => {
       if (!isHealthy) {
         throw new Error('API is not available');
       }
-      return true;  
+      return true;
     } catch (error) {
       console.error('API Health Check Failed:', error);
       setApiError('Unable to connect to the server. Please try again later.');
@@ -106,7 +108,13 @@ const ChatWithAI = ({ image, selectedLanguage, sessionId, onClose }) => {
       <div className="messages">
         {conversation.map((msg, index) => (
           <div key={index} className={`message ${msg.role}`}>
-            {msg.content}
+            {msg.role === 'assistant' ? (
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {msg.content}
+              </ReactMarkdown>
+            ) : (
+              msg.content
+            )}
           </div>
         ))}
       </div>

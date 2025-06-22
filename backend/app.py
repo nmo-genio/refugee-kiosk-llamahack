@@ -86,7 +86,12 @@ async def upload_image(
         hand_written_text = getHandWrittenTextFromImage(file_path, language=language)
         initial_prompt = f"I was handed a note with the following text: {hand_written_text} explain this to me, a refugee in greece"
     else:
-        return {"reply": "The uploaded image is not relevant for refugee assistance."}
+        return {
+            "reply": translated_text(
+                "The uploaded image is not relevant for refugee assistance.",
+                target_language=language,
+            )
+        }
 
     result = chatWithLLAMA(
         initial_prompt,

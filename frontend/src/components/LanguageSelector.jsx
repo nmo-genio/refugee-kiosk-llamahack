@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useTextToSpeech } from '../hooks/useTextToSpeech';
 
 const languages = [
   // 1st row
@@ -38,6 +39,7 @@ export default function LanguageSelector({ onSelect }) {
   const [activeIdx, setActiveIdx] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
   const rotationInterval = useRef(null);
+  const { speak, stop } = useTextToSpeech();
 
   // Helper: split array into rows of N
   const chunk = (arr, size) =>
@@ -55,6 +57,16 @@ export default function LanguageSelector({ onSelect }) {
       if (rotationInterval.current) clearInterval(rotationInterval.current);
     };
   }, [isHovering]);
+
+  useEffect(() => {
+    if (!isHovering) {
+      const currentLanguage = languages[activeIdx];
+      const textToSpeak = welcomeMessages[currentLanguage.code] || welcomeMessages.en;
+      speak(textToSpeak);
+    } else {
+      stop();
+    }
+  }, [activeIdx, isHovering, speak, stop]);
 
   const handleHover = idx => {
     setIsHovering(true);
@@ -80,11 +92,10 @@ export default function LanguageSelector({ onSelect }) {
                     onMouseEnter={() => handleHover(idx)}
                     onFocus={() => handleHover(idx)}
                     onMouseLeave={handleLeave}
-                    className={`flex flex-col items-center justify-center bg-white shadow-lg p-4 rounded-lg border-2 transition-all duration-300 min-h-[120px] w-full ${
-                      activeIdx === idx
+                    className={`flex flex-col items-center justify-center bg-white shadow-lg p-4 rounded-lg border-2 transition-all duration-300 min-h-[120px] w-full ${activeIdx === idx
                         ? "ring-4 ring-blue-400 border-blue-300 scale-[1.02]"
                         : "border-blue-100 hover:border-blue-200 hover:bg-blue-50"
-                    }`}
+                      }`}
                     onClick={() => onSelect && onSelect(lang)}
                   >
                     <span className="text-4xl mb-2">{lang.flag}</span>
@@ -100,9 +111,8 @@ export default function LanguageSelector({ onSelect }) {
         <div className="ml-0 lg:ml-8 w-full lg:w-[350px] min-h-[120px] flex items-center justify-center lg:justify-start relative overflow-hidden mt-8 lg:mt-0">
           <div
             key={current.code}
-            className={`w-full transition-opacity duration-500 ease-in-out ${
-              isHovering ? 'opacity-100' : 'opacity-90'
-            }`}
+            className={`w-full transition-opacity duration-500 ease-in-out ${isHovering ? 'opacity-100' : 'opacity-90'
+              }`}
           >
             <div className="bg-white shadow-lg rounded-xl px-6 py-6 text-lg text-gray-800 font-semibold border-2 border-blue-100 transform transition-transform duration-300 hover:scale-[1.01]">
               <p className="text-gray-700 text-lg text-center" dir={current.dir || 'ltr'}>

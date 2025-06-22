@@ -2,12 +2,7 @@ import os
 import pdfplumber
 from docx import Document
 from sentence_transformers import SentenceTransformer, util
-import torch
-from transformers import pipeline
-from llama_api_client import LlamaAPIClient
 from langdetect import detect
-from llama_api import translateText
-from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 
 model = SentenceTransformer("all-MiniLM-L6-v2")
@@ -22,22 +17,22 @@ def extract_text_from_pdf(pdf_path):
     detected_language = detect(text)
     print(f"Detected language: {detected_language}")
 
-    if detected_language != "en":
-        translated = translateText(text, "en")
-        c = canvas.Canvas(pdf_path, pagesize=letter)
-        c.setFont("Helvetica", 12)
+    # if detected_language != "en":
+    #     translated = translateText(text, "en")
+    #     c = canvas.Canvas(pdf_path, pagesize=letter)
+    #     c.setFont("Helvetica", 12)
 
-        for page in pages:
-            original_text = page.extract_text()
-            if original_text:
-                translated_page_text = translateText(original_text, "en")
-                c.drawString(
-                    50, 750, translated_page_text
-                )  # Adjust coordinates as needed
-                c.showPage()
-        c.save()
+    #     for page in pages:
+    #         original_text = page.extract_text()
+    #         if original_text:
+    #             translated_page_text = translateText(original_text, "en")
+    #             c.drawString(
+    #                 50, 750, translated_page_text
+    #             )  # Adjust coordinates as needed
+    #             c.showPage()
+    #     c.save()
 
-        return translated
+    #     return translated
 
     return text
 
