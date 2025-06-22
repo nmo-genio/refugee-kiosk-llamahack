@@ -24,7 +24,7 @@ const ChatWithAI = ({ imageData }) => {
 
   const handleSendMessage = async () => {
     if (!message.trim()) return;
-    
+
     setIsLoading(true);
     setApiError(null);
     const userMessage = { role: 'user', content: message };
@@ -62,9 +62,9 @@ const ChatWithAI = ({ imageData }) => {
     <div className="chat-container">
       {apiError && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
-          {apiError} 
-          <button 
-            onClick={() => setApiError(null)} 
+          {apiError}
+          <button
+            onClick={() => setApiError(null)}
             className="ml-2 text-red-700 font-bold"
           >
             ×
@@ -87,8 +87,8 @@ const ChatWithAI = ({ imageData }) => {
           placeholder="Type your message..."
           disabled={isLoading}
         />
-        <button 
-          onClick={handleSendMessage} 
+        <button
+          onClick={handleSendMessage}
           disabled={isLoading || !message.trim()}
         >
           {isLoading ? 'Sending...' : 'Send'}

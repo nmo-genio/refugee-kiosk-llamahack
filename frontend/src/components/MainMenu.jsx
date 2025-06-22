@@ -61,7 +61,7 @@ const translations = {
     backButton: 'भाषा चयन पर वापस जाएं',
     buttons: {
       docs: { title: 'सहायता के लिए स्कैन करें', description: 'फॉर्म, नोट या फ्लायर की फोटो लें' },
-      sos: { title: '', description: 'आपातकालीन चेतावनी भेजें' }, 
+      sos: { title: '', description: 'आपातकालीन चेतावनी भेजें' },
       directions: { title: 'दिशा जानकारी', description: 'विशेष सेवाओं का पता लगाने' },
       endSession: { title: 'सत्र समाप्त करें', description: 'भाषा चयन पर वापस जाएं' }
     },
@@ -85,7 +85,7 @@ const translations = {
     backButton: 'Voltar para a seleção de idioma',
     buttons: {
       docs: { title: 'Digitalizar para Assistência', description: 'Tire uma foto de um formulário, nota ou panfleto' },
-      sos: { title: '', description: 'Enviar alerta de emergência' }, 
+      sos: { title: '', description: 'Enviar alerta de emergência' },
       directions: { title: 'Obter direções', description: 'Encontrar serviços essenciais' },
       endSession: { title: 'Encerrar Sessão', description: 'Voltar para a seleção de idioma' }
     },
@@ -109,23 +109,23 @@ const translations = {
     backButton: '返回语言选择',
     buttons: {
       docs: { title: '扫描寻求帮助', description: '拍摄表格、便条或传单的照片' },
-      sos: { title: '', description: '发送紧急警报' }, 
+      sos: { title: '', description: '发送紧急警报' },
       directions: { title: '获取方向', description: '找到基本服务' },
       endSession: { title: '结束会话', description: '返回语言选择' }
     },
-  sosModal: {
-    iWant: "我需要…",
-    options: {
-      medical: '医疗帮助',
-      security: '安全/保护',
-      family: '家庭/儿童帮助',
-      other: '其他'
-    },
-    prompt: '您确定要请求',
-    sendAlert: '发送警报',
-    cancel: '取消',
-    confirmation: '救援正在路上。\n请留在原地。'
-  }
+    sosModal: {
+      iWant: "我需要…",
+      options: {
+        medical: '医疗帮助',
+        security: '安全/保护',
+        family: '家庭/儿童帮助',
+        other: '其他'
+      },
+      prompt: '您确定要请求',
+      sendAlert: '发送警报',
+      cancel: '取消',
+      confirmation: '救援正在路上。\n请留在原地。'
+    }
   },
   ru: {
     welcome: 'Добро пожаловать',
@@ -133,7 +133,7 @@ const translations = {
     backButton: 'Вернуться к выбору языка',
     buttons: {
       docs: { title: 'Сканировать для помощи', description: 'Сделайте фото формы, записки или объявления' },
-      sos: { title: '', description: 'Отправить сигнал бедствия' }, 
+      sos: { title: '', description: 'Отправить сигнал бедствия' },
       directions: { title: 'Найти мою семью', description: 'Помощь в поиске или связи с родственниками' },
       endSession: { title: 'Завершить сеанс', description: 'Вернуться к выбору языка' }
     },
@@ -157,7 +157,7 @@ const translations = {
     backButton: 'Înapoi la selectarea limbii',
     buttons: {
       docs: { title: 'Scanează pentru Asistență', description: 'Fă o poză unui formular, bilet sau pliant' },
-      sos: { title: '', description: 'Trimiteți o alertă de urgență' }, 
+      sos: { title: '', description: 'Trimiteți o alertă de urgență' },
       directions: { title: 'Obțineți direcții', description: 'Găsiți servicii esențiale' },
       endSession: { title: 'Încheie sesiunea', description: 'Înapoi la selectarea limbii' }
     },
@@ -181,7 +181,7 @@ const translations = {
     backButton: 'Terug na Taalkeuse',
     buttons: {
       docs: { title: 'Skandeer vir Hulp', description: 'Neem ’n foto van ’n vorm, nota of pamflet' },
-      sos: { title: '', description: 'Stuur ’n noodwaarskuwing' }, 
+      sos: { title: '', description: 'Stuur ’n noodwaarskuwing' },
       directions: { title: 'Vind My Familie', description: 'Hulp met die opsporing of kontak van familielede' },
       endSession: { title: 'Beëindig Sessie', description: 'Terug na Taalkeuse' }
     },
@@ -205,7 +205,7 @@ const translations = {
     backButton: 'العودة إلى اختيار اللغة',
     buttons: {
       docs: { title: 'المسح للمساعدة', description: 'التقط صورة لنموذج أو ملاحظة أو منشور' },
-      sos: { title: '', description: 'إرسال تنبيه طوارئ' }, 
+      sos: { title: '', description: 'إرسال تنبيه طوارئ' },
       directions: { title: 'الحصول على الاتجاهات', description: 'العثور على الخدمات الأساسية' },
       endSession: { title: 'إنهاء الجلسة', description: 'العودة إلى اختيار اللغة' }
     },
@@ -414,7 +414,7 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
       </div>
 
       {/* Back Button */}
-      <button 
+      <button
         onClick={onBack}
         className="self-start mb-6 px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-800 rounded-lg transition-colors flex items-center"
       >
@@ -486,7 +486,7 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
               <h3 className="text-xl font-semibold">
                 {cameraError ? 'Camera Access' : 'Document Scanner'}
               </h3>
-              <button 
+              <button
                 onClick={closeCamera}
                 className="text-gray-500 hover:text-gray-700"
               >
@@ -544,14 +544,14 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
                         const ctx = canvas.getContext("2d");
                         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
                         const dataUrl = canvas.toDataURL("image/png");
-                    // Stop all video tracks before closing
-                    if (videoRef.current && videoRef.current.srcObject) {
-                      videoRef.current.srcObject.getTracks().forEach(track => track.stop());
-                      videoRef.current.srcObject = null;
-                    }
-                    setCapturedImage(dataUrl);
-                    closeCamera();
-                    setShowChatModal(true);
+                        // Stop all video tracks before closing
+                        if (videoRef.current && videoRef.current.srcObject) {
+                          videoRef.current.srcObject.getTracks().forEach(track => track.stop());
+                          videoRef.current.srcObject = null;
+                        }
+                        setCapturedImage(dataUrl);
+                        closeCamera();
+                        setShowChatModal(true);
                       }
                     }}
                     className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
@@ -595,12 +595,13 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
             <h3 className="text-2xl font-bold mb-4">RKioskAI</h3>
             <img src={capturedImage} alt="Captured" className="w-full max-w-xs rounded mb-6" />
             <div className="bg-gray-100 rounded p-4 mb-4 w-full text-center text-gray-600">
-              <ChatWithAI 
-                image={capturedImage} 
-                onClose={() => { 
-                  setShowChatModal(false); 
-                  setCapturedImage(null); 
-                }} 
+              <ChatWithAI
+                image={capturedImage}
+                selectedLanguage={selectedLanguage}
+                onClose={() => {
+                  setShowChatModal(false);
+                  setCapturedImage(null);
+                }}
               />
             </div>
             <button

@@ -2,11 +2,11 @@
 
 import json
 import os
-import pytesseract
 from PIL import Image
 import base64
 from dotenv import load_dotenv
 from llama_api_client import LlamaAPIClient
+from io import BytesIO
 
 from PyTypes import FormDetails, ImageType
 
@@ -17,8 +17,47 @@ client = LlamaAPIClient(api_key=api_key)
 
 
 def image_to_base64(image_path):
-    with open(image_path, "rb") as img:
-        return base64.b64encode(img.read()).decode("utf-8")
+    """
+    Open and normalize the image to JPEG/PNG, enforce <5MB size,
+    then return a Base64-encoded string.
+    """
+    # Load and normalize format
+    img = Image.open(image_path)
+    orig_format = img.format or "PNG"
+    fmt = (
+        orig_format if orig_format in ("JPEG", "PNG") else "PNG"
+    )  # enforce supported formats :contentReference[oaicite:6]{index=6}
+
+    # Save to buffer
+    buffer = BytesIO()
+    img.save(buffer, format=fmt)
+    data = buffer.getvalue()
+    buffer.close()
+
+    # Ensure size ≤ 5MB; if not, downsize or recompress
+    max_bytes = 5 * 1024 * 1024  # 5 MB limit :contentReference[oaicite:7]{index=7}
+    if len(data) > max_bytes:
+        # First, try resizing to max 1024×1024
+        img.thumbnail((1024, 1024))
+        buffer = BytesIO()
+        img.save(
+            buffer, format=fmt, quality=85
+        )  # initial compression :contentReference[oaicite:8]{index=8}
+        data = buffer.getvalue()
+        buffer.close()
+
+        # If still too large and JPEG, reduce quality iteratively
+        if fmt == "JPEG":
+            quality = 80
+            while len(data) > max_bytes and quality >= 20:
+                buffer = BytesIO()
+                img.save(buffer, format="JPEG", quality=quality)
+                data = buffer.getvalue()
+                buffer.close()
+                quality -= 10
+
+    # Return Base64 string
+    return base64.b64encode(data).decode("utf-8")
 
 
 def getFormDetails(image_path):
@@ -45,7 +84,9 @@ def getFormDetails(image_path):
                     },
                     {
                         "type": "image_url",
-                        "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"},
+                        "image_url": {
+                            "url": f"data:image/{image_path.split('.')[-1]};base64,{base64_image}"
+                        },
                     },
                 ],
             },
@@ -86,7 +127,7 @@ def getHandWrittenTextFromImage(image_path, language="en"):
                     {
                         "type": "image_url",
                         "image_url": {
-                            "url": f"data:image/{image_path.split(".")[1]};base64,{image_to_base64(image_path)}"
+                            "url": f"data:image/{image_path.split('.')[-1]};base64,{image_to_base64(image_path)}"
                         },
                     },
                 ],
@@ -157,7 +198,9 @@ def classfyImage(image_path):
                     },
                     {
                         "type": "image_url",
-                        "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"},
+                        "image_url": {
+                            "url": f"data:image/{image_path.split('.')[-1]};base64,{base64_image}"
+                        },
                     },
                 ],
             },
@@ -175,15 +218,81 @@ def classfyImage(image_path):
     return response_data
 
 
+def chatWithLLAMA(propmt, **kwargs):
+    if "ImagePath" in kwargs:
+        image_path = kwargs["ImagePath"]
+        base64_image = image_to_base64(image_path)
+        image_message = {
+            "type": "image_url",
+            "image_url": {
+                "url": f"data:image/{image_path.split('.')[-1]};base64,{base64_image}"
+            },
+        }
+
+    messages = [
+        {
+            "role": "system",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "You will be helping refugees by answering their questions and providing information.",
+                },
+            ],
+        },
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": propmt,
+                },
+            ],
+        },
+    ]
+
+    if "ImagePath" in kwargs:
+        messages.append(
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:image/{image_path.split('.')[-1]};base64,{base64_image}"
+                        },
+                    },
+                ],
+            }
+        )
+
+    messages.append(
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"{semantic_search(propmt)}",
+                },
+            ],
+        }
+    )
+
+    if "PreviousMessages" in kwargs:
+        previous_messages = kwargs["PreviousMessages"]
+        messages.insert(0, previous_messages)
+
+    response = client.chat.completions.create(
+        model="Llama-4-Maverick-17B-128E-Instruct-FP8",
+        messages=messages,
+        response_format={
+            "type": "text",
+        },
+    )
+
+    return response.completion_message.content.text.strip(), messages.append(
+        response.completion_message
+    )
+
+
 if __name__ == "__main__":
-    image_path = os.getcwd() + "/testImages/banana.png"
-    print(classfyImage(image_path))
-
-    image_path = os.getcwd() + "/testImages/FrenchForm.png"
-    print(classfyImage(image_path))
-
-    image_path = os.getcwd() + "/testImages/handwrittenImage.png"
-    print(classfyImage(image_path))
-
-    image_path = os.getcwd() + "/testImages/DirectionsHandwritten.jpeg"
-    print(getHandWrittenTextFromImage(image_path))
+    pass

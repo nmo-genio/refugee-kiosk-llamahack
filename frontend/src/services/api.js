@@ -15,9 +15,9 @@ const getOrCreateSessionId = () => {
 
 export const uploadImage = async (imageFile, language) => {
   const formData = new FormData();
-  formData.append('image', imageFile);
+  formData.append('file', imageFile);
   formData.append('language', language);
-  
+
   try {
     const response = await fetch(`${API_BASE_URL}/api/upload-image`, {
       method: 'POST',
@@ -26,11 +26,11 @@ export const uploadImage = async (imageFile, language) => {
       },
       body: formData,
     });
-    
+
     if (!response.ok) {
       throw new Error('Failed to upload image');
     }
-    
+
     return await response.json();
   } catch (error) {
     console.error('Error uploading image:', error);
@@ -51,11 +51,11 @@ export const sendChatMessage = async (message, language) => {
         prompt: message,
       }),
     });
-    
+
     if (!response.ok) {
       throw new Error('Failed to send message');
     }
-    
+
     return await response.json();
   } catch (error) {
     console.error('Error sending message:', error);

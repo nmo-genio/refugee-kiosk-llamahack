@@ -11,3 +11,5 @@ pdfplumber
 python-docx
 langdetect
 reportlab
+langchain
+langchain_community
