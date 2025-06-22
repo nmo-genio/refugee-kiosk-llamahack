@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-
+import SOSModal from './SOSModal';
 // All translations for supported languages
 const translations = {
   en: {
@@ -8,9 +8,22 @@ const translations = {
     backButton: 'Back to Language Selection',
     buttons: {
       docs: { title: 'Scan for Assistance', description: 'Take a photo of a form, note, or flyer' },
-      sos: { title: 'SOS', description: 'Send an emergency alert' },
+      sos: { title: '', description: 'Send an emergency alert' }, // Title removed as requested
       family: { title: 'Find My Family', description: 'Help with tracing or contacting relatives' },
       endSession: { title: 'End Session', description: 'Return to language selection' }
+    },
+    sosModal: {
+      iWant: 'I want...',
+      options: {
+        medical: 'Medical Help',
+        security: 'Security/Protection',
+        family: 'Family/Child Help',
+        other: 'Something Else'
+      },
+      prompt: 'Are you sure you want to ask for',
+      sendAlert: 'Send Alert',
+      cancel: 'Cancel',
+      confirmation: 'Help is on the way.\nPlease stay where you are.'
     }
   },
   es: {
@@ -19,9 +32,22 @@ const translations = {
     backButton: 'Volver a la selección de idioma',
     buttons: {
       docs: { title: 'Escanear para Asistencia', description: 'Tome una foto de un formulario, nota o volante' },
-      sos: { title: 'SOS', description: 'Enviar una alerta de emergencia' },
+      sos: { title: '', description: 'Enviar una alerta de emergencia' }, // Title removed as requested
       family: { title: 'Encontrar a mi Familia', description: 'Ayuda para localizar o contactar familiares' },
       endSession: { title: 'Terminar Sesión', description: 'Volver a la selección de idioma' }
+    },
+    sosModal: {
+      iWant: 'Quiero...',
+      options: {
+        medical: 'Ayuda médica',
+        security: 'Seguridad/Protección',
+        family: 'Ayuda familiar/infantil',
+        other: 'Otra cosa'
+      },
+      prompt: '¿Está seguro de que desea solicitar',
+      sendAlert: 'Enviar alerta',
+      cancel: 'Cancelar',
+      confirmation: 'La ayuda está en camino.\nPor favor, quédese donde está.'
     }
   },
   hi: {
@@ -30,9 +56,22 @@ const translations = {
     backButton: 'भाषा चयन पर वापस जाएं',
     buttons: {
       docs: { title: 'सहायता के लिए स्कैन करें', description: 'फॉर्म, नोट या फ्लायर की फोटो लें' },
-      sos: { title: 'एसओएस', description: 'आपातकालीन चेतावनी भेजें' },
+      sos: { title: '', description: 'आपातकालीन चेतावनी भेजें' }, // Title removed as requested
       family: { title: 'मेरा परिवार ढूंढें', description: 'रिश्तेदारों का पता लगाने या संपर्क करने में सहायता' },
       endSession: { title: 'सत्र समाप्त करें', description: 'भाषा चयन पर वापस जाएं' }
+    },
+    sosModal: {
+      iWant: 'मैं चाहता हूं...',
+      options: {
+        medical: 'चिकित्सा सहायता',
+        security: 'सुरक्षा/संरक्षण',
+        family: 'परिवार/बच्चों की सहायता',
+        other: 'कुछ और'
+      },
+      prompt: 'क्या आप सुनिश्चित हैं कि आप अनुरोध करना चाहते हैं',
+      sendAlert: 'अलर्ट भेजें',
+      cancel: 'रद्द करें',
+      confirmation: 'मदद रास्ते में है।\nकृपया जहाँ हैं वहीं रहें।'
     }
   },
   pt: {
@@ -41,9 +80,22 @@ const translations = {
     backButton: 'Voltar para a seleção de idioma',
     buttons: {
       docs: { title: 'Digitalizar para Assistência', description: 'Tire uma foto de um formulário, nota ou panfleto' },
-      sos: { title: 'SOS', description: 'Enviar alerta de emergência' },
+      sos: { title: '', description: 'Enviar alerta de emergência' }, // Title removed as requested
       family: { title: 'Encontrar Minha Família', description: 'Ajuda para localizar ou entrar em contato com parentes' },
       endSession: { title: 'Encerrar Sessão', description: 'Voltar para a seleção de idioma' }
+    },
+    sosModal: {
+      iWant: 'Eu quero...',
+      options: {
+        medical: 'Ajuda médica',
+        security: 'Segurança/Proteção',
+        family: 'Ajuda familiar/infantil',
+        other: 'Outro'
+      },
+      prompt: 'Você tem certeza de que deseja solicitar',
+      sendAlert: 'Enviar alerta',
+      cancel: 'Cancelar',
+      confirmation: 'Ajuda está em caminho.\nPor favor, fique onde está.'
     }
   },
   zh: {
@@ -52,10 +104,23 @@ const translations = {
     backButton: '返回语言选择',
     buttons: {
       docs: { title: '扫描寻求帮助', description: '拍摄表格、便条或传单的照片' },
-      sos: { title: '紧急求助', description: '发送紧急警报' },
+      sos: { title: '', description: '发送紧急警报' }, 
       family: { title: '寻找家人', description: '帮助追踪或联系亲属' },
       endSession: { title: '结束会话', description: '返回语言选择' }
-    }
+    },
+  sosModal: {
+    iWant: "我需要…",
+    options: {
+      medical: '医疗帮助',
+      security: '安全/保护',
+      family: '家庭/儿童帮助',
+      other: '其他'
+    },
+    prompt: '您确定要请求',
+    sendAlert: '发送警报',
+    cancel: '取消',
+    confirmation: '救援正在路上。\n请留在原地。'
+  }
   },
   ru: {
     welcome: 'Добро пожаловать',
@@ -63,9 +128,22 @@ const translations = {
     backButton: 'Вернуться к выбору языка',
     buttons: {
       docs: { title: 'Сканировать для помощи', description: 'Сделайте фото формы, записки или объявления' },
-      sos: { title: 'SOS', description: 'Отправить сигнал бедствия' },
+      sos: { title: '', description: 'Отправить сигнал бедствия' }, 
       family: { title: 'Найти мою семью', description: 'Помощь в поиске или связи с родственниками' },
       endSession: { title: 'Завершить сеанс', description: 'Вернуться к выбору языка' }
+    },
+    sosModal: {
+      iWant: "Я хочу…",
+      options: {
+        medical: 'Медицинская помощь',
+        security: 'Охрана/Защита',
+        family: 'Помощь семье/детям',
+        other: 'Другое'
+      },
+      prompt: 'Вы уверены, что хотите попросить о',
+      sendAlert: 'Отправить сигнал',
+      cancel: 'Отмена',
+      confirmation: 'Помощь уже в пути.\nПожалуйста, оставайтесь на месте.'
     }
   },
   ro: {
@@ -74,9 +152,22 @@ const translations = {
     backButton: 'Înapoi la selectarea limbii',
     buttons: {
       docs: { title: 'Scanează pentru Asistență', description: 'Fă o poză unui formular, bilet sau pliant' },
-      sos: { title: 'SOS', description: 'Trimiteți o alertă de urgență' },
+      sos: { title: '', description: 'Trimiteți o alertă de urgență' }, 
       family: { title: 'Găsește-mi familia', description: 'Ajutor pentru localizarea sau contactarea rudelor' },
       endSession: { title: 'Încheie sesiunea', description: 'Înapoi la selectarea limbii' }
+    },
+    sosModal: {
+      iWant: "Doresc…",
+      options: {
+        medical: 'Ajutor medical',
+        security: 'Securitate/Protecție',
+        family: 'Ajutor familial/copil',
+        other: 'Altceva'
+      },
+      prompt: 'Sigur doriți să cereți',
+      sendAlert: 'Trimite alertă',
+      cancel: 'Anulează',
+      confirmation: 'Ajutorul este pe drum.\nVă rugăm să rămâneți unde sunteți.'
     }
   },
   af: {
@@ -85,9 +176,22 @@ const translations = {
     backButton: 'Terug na Taalkeuse',
     buttons: {
       docs: { title: 'Skandeer vir Hulp', description: 'Neem ’n foto van ’n vorm, nota of pamflet' },
-      sos: { title: 'SOS', description: 'Stuur \'n noodwaarskuwing' },
+      sos: { title: '', description: 'Stuur ’n noodwaarskuwing' }, 
       family: { title: 'Vind My Familie', description: 'Hulp met die opsporing of kontak van familielede' },
       endSession: { title: 'Beëindig Sessie', description: 'Terug na Taalkeuse' }
+    },
+    sosModal: {
+      iWant: "Ek wil graag…",
+      options: {
+        medical: 'Mediese Hulp',
+        security: 'Sekuriteit/Beskerming',
+        family: 'Gesin/Kinderhulp',
+        other: 'Iets anders'
+      },
+      prompt: 'Is jy seker jy wil vra vir',
+      sendAlert: 'Stuur Alarm',
+      cancel: 'Kanselleer',
+      confirmation: 'Hulp is oppad.\nBly asseblief waar jy is.'
     }
   },
   ar: {
@@ -96,9 +200,22 @@ const translations = {
     backButton: 'العودة إلى اختيار اللغة',
     buttons: {
       docs: { title: 'المسح للمساعدة', description: 'التقط صورة لنموذج أو ملاحظة أو منشور' },
-      sos: { title: 'نجدة', description: 'إرسال تنبيه طوارئ' },
+      sos: { title: '', description: 'إرسال تنبيه طوارئ' }, 
       family: { title: 'البحث عن عائلتي', description: 'مساعدة في تتبع أو الاتصال بالأقارب' },
       endSession: { title: 'إنهاء الجلسة', description: 'العودة إلى اختيار اللغة' }
+    },
+    osModal: {
+      iWant: "أرغب في…",
+      options: {
+        medical: 'مساعدة طبية',
+        security: 'الأمن/الحماية',
+        family: 'مساعدة الأسرة/الأطفال',
+        other: 'شيء آخر'
+      },
+      prompt: 'هل أنت متأكد أنك تريد طلب',
+      sendAlert: 'إرسال تنبيه',
+      cancel: 'إلغاء',
+      confirmation: 'المساعدة في الطريق.\nيرجى البقاء في مكانك.'
     }
   },
   el: {
@@ -107,9 +224,22 @@ const translations = {
     backButton: 'Επιστροφή στην επιλογή γλώσσας',
     buttons: {
       docs: { title: 'Σάρωση για Βοήθεια', description: 'Βγάλτε φωτογραφία μια φόρμα, σημείωμα ή φυλλάδιο' },
-      sos: { title: 'SOS', description: 'Στείλε ένα σήμα κινδύνου' },
+      sos: { title: '', description: 'Στείλε ένα σήμα κινδύνου' },
       family: { title: 'Βρες την Οικογένειά μου', description: 'Βοήθεια στην εύρεση ή επικοινωνία με συγγενείς' },
       endSession: { title: 'Τέλος Συνεδρίας', description: 'Επιστροφή στην επιλογή γλώσσας' }
+    },
+    sosModal: {
+      iWant: "Θέλω…",
+      options: {
+        medical: 'Ιατρική Βοήθεια',
+        security: 'Ασφάλεια/Προστασία',
+        family: 'Οικογενειακή/Παιδική βοήθεια',
+        other: 'Κάτι άλλο'
+      },
+      prompt: 'Είστε βέβαιοι ότι θέλετε να ζητήσετε',
+      sendAlert: 'Αποστολή ειδοποίησης',
+      cancel: 'Ακύρωση',
+      confirmation: 'Η βοήθεια έρχεται.\nΠαραμείνετε στη θέση σας.'
     }
   },
   uk: {
@@ -118,8 +248,21 @@ const translations = {
     backButton: 'Повернутися до вибору мови',
     buttons: {
       docs: { title: 'Сканувати для допомоги', description: 'Зробіть фото форми, нотатки або листівки' },
-      sos: { title: 'SOS', description: 'Надіслати екстрене повідомлення' },
+      sos: { title: '', description: 'Надіслати екстрене повідомлення' },
       family: { title: 'Знайти родину', description: 'Допомога у пошуку або зв\'язку з родичами' }
+    },
+    sosModal: {
+      iWant: "Я хочу…",
+      options: {
+        medical: 'Медична допомога',
+        security: 'Безпека/Захист',
+        family: 'Допомога сім\'ї/дитині',
+        other: 'Інше'
+      },
+      prompt: 'Ви впевнені, що хочете попросити про',
+      sendAlert: 'Відправити сигнал',
+      cancel: 'Скасувати',
+      confirmation: 'Допомога вже в дорозі.\nБудь ласка, залишайтеся на місці.'
     }
   },
   fr: {
@@ -128,9 +271,22 @@ const translations = {
     backButton: 'Retour à la sélection de la langue',
     buttons: {
       docs: { title: 'Scanner pour Aide', description: 'Prenez une photo d’un formulaire, d’une note ou d’un dépliant' },
-      sos: { title: 'SOS', description: 'Envoyer une alerte d\'urgence' },
+      sos: { title: '', description: 'Envoyer une alerte d\'urgence' },
       family: { title: 'Retrouver ma Famille', description: 'Aide pour localiser ou contacter des proches' },
       endSession: { title: 'Terminer la session', description: 'Retour à la sélection de la langue' }
+    },
+    sosModal: {
+      iWant: "Je veux…",
+      options: {
+        medical: 'Aide médicale',
+        security: 'Sécurité/Protection',
+        family: 'Aide familiale/enfant',
+        other: 'Autre chose'
+      },
+      prompt: 'Êtes-vous sûr de vouloir demander',
+      sendAlert: 'Envoyer l\'alerte',
+      cancel: 'Annuler',
+      confirmation: 'L\'aide est en route.\nVeuillez rester où vous êtes.'
     }
   }
 };
@@ -182,11 +338,17 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
     };
   }, []);
 
+  // SOS modal state
+  const [showSOSModal, setShowSOSModal] = useState(false);
+
   // Handle button click
   const handleButtonClick = (action) => {
     if (action === 'docs') {
       setShowCameraModal(true);
-      setTimeout(() => { handleCameraAccess(); }, 200);
+      setTimeout(() => { handleCameraAccess(); }, 200); //camera logic
+    }
+    if (action === 'sos') {
+      setShowSOSModal(true);
     }
     // TODO: handle other actions like 'sos', 'family'
   };
@@ -326,6 +488,17 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
           </div>
         </div>
       )}
+
+      {/* SOS Modal */}
+      {showSOSModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <SOSModal
+            onClose={() => setShowSOSModal(false)}
+            onSend={option => console.log('Sending SOS alert:', option)}
+            translations={t.sosModal}
+          />
+  </div>
+)}
     </div>
   );
 };
