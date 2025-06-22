@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-// All translations for the supported languages
+// All translations for supported languages
 const translations = {
   en: {
     welcome: 'Welcome',
@@ -9,27 +9,146 @@ const translations = {
     buttons: {
       docs: { title: 'Scan for Assistance', description: 'Take a photo of a form, note, or flyer' },
       sos: { title: 'SOS', description: 'Send an emergency alert' },
-      family: { title: 'Find My Family', description: 'Help with tracing or contacting relatives' }
+      family: { title: 'Find My Family', description: 'Help with tracing or contacting relatives' },
+      endSession: { title: 'End Session', description: 'Return to language selection' }
     }
   },
-  // ... (add other languages here, as in your code above)
-  // For brevity, only EN is shown; add your other languages' objects here
+  es: {
+    welcome: 'Bienvenido',
+    mapTitle: 'Mapa del Campo de Refugiados',
+    backButton: 'Volver a la selección de idioma',
+    buttons: {
+      docs: { title: 'Escanear para Asistencia', description: 'Tome una foto de un formulario, nota o volante' },
+      sos: { title: 'SOS', description: 'Enviar una alerta de emergencia' },
+      family: { title: 'Encontrar a mi Familia', description: 'Ayuda para localizar o contactar familiares' },
+      endSession: { title: 'Terminar Sesión', description: 'Volver a la selección de idioma' }
+    }
+  },
+  hi: {
+    welcome: 'स्वागत है',
+    mapTitle: 'शरणार्थी शिविर का नक्शा',
+    backButton: 'भाषा चयन पर वापस जाएं',
+    buttons: {
+      docs: { title: 'सहायता के लिए स्कैन करें', description: 'फॉर्म, नोट या फ्लायर की फोटो लें' },
+      sos: { title: 'एसओएस', description: 'आपातकालीन चेतावनी भेजें' },
+      family: { title: 'मेरा परिवार ढूंढें', description: 'रिश्तेदारों का पता लगाने या संपर्क करने में सहायता' },
+      endSession: { title: 'सत्र समाप्त करें', description: 'भाषा चयन पर वापस जाएं' }
+    }
+  },
+  pt: {
+    welcome: 'Bem-vindo',
+    mapTitle: 'Mapa do Campo de Refugiados',
+    backButton: 'Voltar para a seleção de idioma',
+    buttons: {
+      docs: { title: 'Digitalizar para Assistência', description: 'Tire uma foto de um formulário, nota ou panfleto' },
+      sos: { title: 'SOS', description: 'Enviar alerta de emergência' },
+      family: { title: 'Encontrar Minha Família', description: 'Ajuda para localizar ou entrar em contato com parentes' },
+      endSession: { title: 'Encerrar Sessão', description: 'Voltar para a seleção de idioma' }
+    }
+  },
+  zh: {
+    welcome: '欢迎',
+    mapTitle: '难民营地图',
+    backButton: '返回语言选择',
+    buttons: {
+      docs: { title: '扫描寻求帮助', description: '拍摄表格、便条或传单的照片' },
+      sos: { title: '紧急求助', description: '发送紧急警报' },
+      family: { title: '寻找家人', description: '帮助追踪或联系亲属' },
+      endSession: { title: '结束会话', description: '返回语言选择' }
+    }
+  },
+  ru: {
+    welcome: 'Добро пожаловать',
+    mapTitle: 'Карта лагеря беженцев',
+    backButton: 'Вернуться к выбору языка',
+    buttons: {
+      docs: { title: 'Сканировать для помощи', description: 'Сделайте фото формы, записки или объявления' },
+      sos: { title: 'SOS', description: 'Отправить сигнал бедствия' },
+      family: { title: 'Найти мою семью', description: 'Помощь в поиске или связи с родственниками' },
+      endSession: { title: 'Завершить сеанс', description: 'Вернуться к выбору языка' }
+    }
+  },
+  ro: {
+    welcome: 'Bun venit',
+    mapTitle: 'Harta Taberei de Refugiați',
+    backButton: 'Înapoi la selectarea limbii',
+    buttons: {
+      docs: { title: 'Scanează pentru Asistență', description: 'Fă o poză unui formular, bilet sau pliant' },
+      sos: { title: 'SOS', description: 'Trimiteți o alertă de urgență' },
+      family: { title: 'Găsește-mi familia', description: 'Ajutor pentru localizarea sau contactarea rudelor' },
+      endSession: { title: 'Încheie sesiunea', description: 'Înapoi la selectarea limbii' }
+    }
+  },
+  af: {
+    welcome: 'Welkom',
+    mapTitle: 'Vlugtelingkamp Kaart',
+    backButton: 'Terug na Taalkeuse',
+    buttons: {
+      docs: { title: 'Skandeer vir Hulp', description: 'Neem ’n foto van ’n vorm, nota of pamflet' },
+      sos: { title: 'SOS', description: 'Stuur \'n noodwaarskuwing' },
+      family: { title: 'Vind My Familie', description: 'Hulp met die opsporing of kontak van familielede' },
+      endSession: { title: 'Beëindig Sessie', description: 'Terug na Taalkeuse' }
+    }
+  },
+  ar: {
+    welcome: 'مرحباً',
+    mapTitle: 'خريطة مخيم اللاجئين',
+    backButton: 'العودة إلى اختيار اللغة',
+    buttons: {
+      docs: { title: 'المسح للمساعدة', description: 'التقط صورة لنموذج أو ملاحظة أو منشور' },
+      sos: { title: 'نجدة', description: 'إرسال تنبيه طوارئ' },
+      family: { title: 'البحث عن عائلتي', description: 'مساعدة في تتبع أو الاتصال بالأقارب' },
+      endSession: { title: 'إنهاء الجلسة', description: 'العودة إلى اختيار اللغة' }
+    }
+  },
+  el: {
+    welcome: 'Καλώς ήρθατε',
+    mapTitle: 'Χάρτης του Προσφυγικού Καταυλισμού',
+    backButton: 'Επιστροφή στην επιλογή γλώσσας',
+    buttons: {
+      docs: { title: 'Σάρωση για Βοήθεια', description: 'Βγάλτε φωτογραφία μια φόρμα, σημείωμα ή φυλλάδιο' },
+      sos: { title: 'SOS', description: 'Στείλε ένα σήμα κινδύνου' },
+      family: { title: 'Βρες την Οικογένειά μου', description: 'Βοήθεια στην εύρεση ή επικοινωνία με συγγενείς' },
+      endSession: { title: 'Τέλος Συνεδρίας', description: 'Επιστροφή στην επιλογή γλώσσας' }
+    }
+  },
+  uk: {
+    welcome: 'Ласкаво просимо',
+    mapTitle: 'Мапа табору біженців',
+    backButton: 'Повернутися до вибору мови',
+    buttons: {
+      docs: { title: 'Сканувати для допомоги', description: 'Зробіть фото форми, нотатки або листівки' },
+      sos: { title: 'SOS', description: 'Надіслати екстрене повідомлення' },
+      family: { title: 'Знайти родину', description: 'Допомога у пошуку або зв\'язку з родичами' }
+    }
+  },
+  fr: {
+    welcome: 'Bienvenue',
+    mapTitle: 'Carte du Camp de Réfugiés',
+    backButton: 'Retour à la sélection de la langue',
+    buttons: {
+      docs: { title: 'Scanner pour Aide', description: 'Prenez une photo d’un formulaire, d’une note ou d’un dépliant' },
+      sos: { title: 'SOS', description: 'Envoyer une alerte d\'urgence' },
+      family: { title: 'Retrouver ma Famille', description: 'Aide pour localiser ou contacter des proches' },
+      endSession: { title: 'Terminer la session', description: 'Retour à la sélection de la langue' }
+    }
+  }
 };
 
 const MainMenu = ({ onBack, selectedLanguage }) => {
-  // --- Camera modal state
+  // Camera modal state
   const [showCameraModal, setShowCameraModal] = useState(false);
   const [cameraError, setCameraError] = useState(null);
   const videoRef = useRef(null);
   const streamRef = useRef(null);
 
-  // --- Translation
+  // Translation
   const langCode = selectedLanguage?.code || 'en';
   const t = translations[langCode] || translations.en;
   const isRTL = selectedLanguage?.dir === 'rtl';
   const textDirection = isRTL ? 'rtl' : 'ltr';
 
-  // --- Camera handling
+  // Camera handling
   const handleCameraAccess = async () => {
     setCameraError(null);
     try {
@@ -63,16 +182,15 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
     };
   }, []);
 
-  // --- Handle button click
+  // Handle button click
   const handleButtonClick = (action) => {
     if (action === 'docs') {
       setShowCameraModal(true);
-      setTimeout(() => { handleCameraAccess(); }, 200); // let modal mount
+      setTimeout(() => { handleCameraAccess(); }, 200);
     }
     // TODO: handle other actions like 'sos', 'family'
   };
 
-  // --- The actual UI ---
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-50 to-white p-4">
       {/* Back Button */}
@@ -107,7 +225,7 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
       </div>
 
       {/* Action Buttons */}
-      <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6" dir={textDirection}>
+      <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6 mb-8" dir={textDirection}>
         {[
           { id: 'docs', icon: '📷', ...t.buttons.docs },
           { id: 'sos', icon: '🆘', ...t.buttons.sos },
@@ -127,6 +245,17 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
             </p>
           </button>
         ))}
+      </div>
+
+      {/* End Session Button - Fixed in bottom right corner */}
+      <div className="fixed bottom-6 right-6 z-10">
+        <button
+          onClick={onBack}
+          className="flex items-center justify-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 font-medium text-lg"
+        >
+          <span>→</span>
+          <span>{t.buttons.endSession.title}</span>
+        </button>
       </div>
 
       {/* Camera Modal */}
@@ -186,7 +315,6 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
               {!cameraError && (
                 <button
                   onClick={() => {
-                    // Placeholder: document capture goes here
                     alert('Document capture functionality will be implemented here');
                   }}
                   className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
