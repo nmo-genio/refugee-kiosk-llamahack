@@ -87,7 +87,7 @@ async def upload_image(
         initial_prompt = f"I was handed a note with the following text: {hand_written_text} explain this to me, a refugee in greece"
     else:
         return {
-            "reply": translated_text(
+            "reply": translateText(
                 "The uploaded image is not relevant for refugee assistance.",
                 target_language=language,
             )
