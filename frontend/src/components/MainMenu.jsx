@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import SOSModal from './SOSModal';
 import ChatWithAI from './ChatWithAI';
+import DirectionsModal from './DirectionsModal';
 
 
 // All translations for supported languages
@@ -11,8 +12,8 @@ const translations = {
     backButton: 'Back to Language Selection',
     buttons: {
       docs: { title: 'Scan for Assistance', description: 'Take a photo of a form, note, or flyer' },
-      sos: { title: '', description: 'Send an emergency alert' }, 
-      family: { title: 'Find My Family', description: 'Help with tracing or contacting relatives' },
+      sos: { title: '', description: 'Send an emergency alert' },
+      directions: { title: 'Get Directions', description: 'Find essential services' },
       endSession: { title: 'End Session', description: 'Return to language selection' }
     },
     sosModal: {
@@ -34,10 +35,10 @@ const translations = {
     mapTitle: 'Mapa del Campo de Refugiados',
     backButton: 'Volver a la selección de idioma',
     buttons: {
-      docs: { title: 'Escanear para Asistencia', description: 'Tome una foto de un formulario, nota o volante' },
-      sos: { title: '', description: 'Enviar una alerta de emergencia' }, 
-      family: { title: 'Encontrar a mi Familia', description: 'Ayuda para localizar o contactar familiares' },
-      endSession: { title: 'Terminar Sesión', description: 'Volver a la selección de idioma' }
+      docs: { title: 'Escanear para obtener ayuda', description: 'Toma una foto de un formulario, nota o folleto' },
+      sos: { title: '', description: 'Enviar una alerta de emergencia' },
+      directions: { title: 'Obtener direcciones', description: 'Encontrar servicios esenciales' },
+      endSession: { title: 'Terminar sesión', description: 'Volver a la selección de idioma' }
     },
     sosModal: {
       iWant: 'Quiero...',
@@ -60,7 +61,7 @@ const translations = {
     buttons: {
       docs: { title: 'सहायता के लिए स्कैन करें', description: 'फॉर्म, नोट या फ्लायर की फोटो लें' },
       sos: { title: '', description: 'आपातकालीन चेतावनी भेजें' }, 
-      family: { title: 'मेरा परिवार ढूंढें', description: 'रिश्तेदारों का पता लगाने या संपर्क करने में सहायता' },
+      directions: { title: 'दिशा जानकारी', description: 'विशेष सेवाओं का पता लगाने' },
       endSession: { title: 'सत्र समाप्त करें', description: 'भाषा चयन पर वापस जाएं' }
     },
     sosModal: {
@@ -84,7 +85,7 @@ const translations = {
     buttons: {
       docs: { title: 'Digitalizar para Assistência', description: 'Tire uma foto de um formulário, nota ou panfleto' },
       sos: { title: '', description: 'Enviar alerta de emergência' }, 
-      family: { title: 'Encontrar Minha Família', description: 'Ajuda para localizar ou entrar em contato com parentes' },
+      directions: { title: 'Obter direções', description: 'Encontrar serviços essenciais' },
       endSession: { title: 'Encerrar Sessão', description: 'Voltar para a seleção de idioma' }
     },
     sosModal: {
@@ -108,7 +109,7 @@ const translations = {
     buttons: {
       docs: { title: '扫描寻求帮助', description: '拍摄表格、便条或传单的照片' },
       sos: { title: '', description: '发送紧急警报' }, 
-      family: { title: '寻找家人', description: '帮助追踪或联系亲属' },
+      directions: { title: '获取方向', description: '找到基本服务' },
       endSession: { title: '结束会话', description: '返回语言选择' }
     },
   sosModal: {
@@ -132,7 +133,7 @@ const translations = {
     buttons: {
       docs: { title: 'Сканировать для помощи', description: 'Сделайте фото формы, записки или объявления' },
       sos: { title: '', description: 'Отправить сигнал бедствия' }, 
-      family: { title: 'Найти мою семью', description: 'Помощь в поиске или связи с родственниками' },
+      directions: { title: 'Найти мою семью', description: 'Помощь в поиске или связи с родственниками' },
       endSession: { title: 'Завершить сеанс', description: 'Вернуться к выбору языка' }
     },
     sosModal: {
@@ -156,7 +157,7 @@ const translations = {
     buttons: {
       docs: { title: 'Scanează pentru Asistență', description: 'Fă o poză unui formular, bilet sau pliant' },
       sos: { title: '', description: 'Trimiteți o alertă de urgență' }, 
-      family: { title: 'Găsește-mi familia', description: 'Ajutor pentru localizarea sau contactarea rudelor' },
+      directions: { title: 'Obțineți direcții', description: 'Găsiți servicii esențiale' },
       endSession: { title: 'Încheie sesiunea', description: 'Înapoi la selectarea limbii' }
     },
     sosModal: {
@@ -180,7 +181,7 @@ const translations = {
     buttons: {
       docs: { title: 'Skandeer vir Hulp', description: 'Neem ’n foto van ’n vorm, nota of pamflet' },
       sos: { title: '', description: 'Stuur ’n noodwaarskuwing' }, 
-      family: { title: 'Vind My Familie', description: 'Hulp met die opsporing of kontak van familielede' },
+      directions: { title: 'Vind My Familie', description: 'Hulp met die opsporing of kontak van familielede' },
       endSession: { title: 'Beëindig Sessie', description: 'Terug na Taalkeuse' }
     },
     sosModal: {
@@ -204,7 +205,7 @@ const translations = {
     buttons: {
       docs: { title: 'المسح للمساعدة', description: 'التقط صورة لنموذج أو ملاحظة أو منشور' },
       sos: { title: '', description: 'إرسال تنبيه طوارئ' }, 
-      family: { title: 'البحث عن عائلتي', description: 'مساعدة في تتبع أو الاتصال بالأقارب' },
+      directions: { title: 'الحصول على الاتجاهات', description: 'العثور على الخدمات الأساسية' },
       endSession: { title: 'إنهاء الجلسة', description: 'العودة إلى اختيار اللغة' }
     },
     osModal: {
@@ -228,7 +229,7 @@ const translations = {
     buttons: {
       docs: { title: 'Σάρωση για Βοήθεια', description: 'Βγάλτε φωτογραφία μια φόρμα, σημείωμα ή φυλλάδιο' },
       sos: { title: '', description: 'Στείλε ένα σήμα κινδύνου' },
-      family: { title: 'Βρες την Οικογένειά μου', description: 'Βοήθεια στην εύρεση ή επικοινωνία με συγγενείς' },
+      directions: { title: 'Βρες την Οικογένειά μου', description: 'Βοήθεια στην εύρεση ή επικοινωνία με συγγενείς' },
       endSession: { title: 'Τέλος Συνεδρίας', description: 'Επιστροφή στην επιλογή γλώσσας' }
     },
     sosModal: {
@@ -252,7 +253,7 @@ const translations = {
     buttons: {
       docs: { title: 'Сканувати для допомоги', description: 'Зробіть фото форми, нотатки або листівки' },
       sos: { title: '', description: 'Надіслати екстрене повідомлення' },
-      family: { title: 'Знайти родину', description: 'Допомога у пошуку або зв\'язку з родичами' }
+      directions: { title: 'Знайти родину', description: 'Допомога у пошуку або зв\'язку з родичами' }
     },
     sosModal: {
       iWant: "Я хочу…",
@@ -275,7 +276,7 @@ const translations = {
     buttons: {
       docs: { title: 'Scanner pour Aide', description: 'Prenez une photo d’un formulaire, d’une note ou d’un dépliant' },
       sos: { title: '', description: 'Envoyer une alerte d\'urgence' },
-      family: { title: 'Retrouver ma Famille', description: 'Aide pour localiser ou contacter des proches' },
+      directions: { title: 'Obtenir des instructions', description: 'Trouvez des services essentiels' },
       endSession: { title: 'Terminer la session', description: 'Retour à la sélection de la langue' }
     },
     sosModal: {
@@ -346,19 +347,29 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
     };
   }, []);
 
-  // SOS modal state
+  // Modal states
   const [showSOSModal, setShowSOSModal] = useState(false);
+  const [showDirectionsModal, setShowDirectionsModal] = useState(false);
 
   // Handle button click
-  const handleButtonClick = (action) => {
-    if (action === 'docs') {
-      setShowCameraModal(true);
-      setTimeout(() => { handleCameraAccess(); }, 200); //camera logic
+  const handleButtonClick = (buttonId) => {
+    switch (buttonId) {
+      case 'docs':
+        setShowCameraModal(true);
+        break;
+      case 'sos':
+        setShowSOSModal(true);
+        break;
+      case 'directions':
+        // Add this new case
+        setShowDirectionsModal(true);
+        break;
+      case 'endSession':
+        onBack();
+        break;
+      default:
+        break;
     }
-    if (action === 'sos') {
-      setShowSOSModal(true);
-    }
-    // TODO: handle other actions like 'sos', 'family'
   };
 
   return (
@@ -399,7 +410,7 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
         {[
           { id: 'docs', icon: '📷', ...t.buttons.docs },
           { id: 'sos', icon: '🆘', ...t.buttons.sos },
-          { id: 'family', icon: '👨‍👩‍👧‍👦', ...t.buttons.family }
+          { id: 'directions', icon: '🗺️', ...t.buttons.directions }
         ].map((button) => (
           <button
             key={button.id}
@@ -523,6 +534,16 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
             onClose={() => setShowSOSModal(false)}
             onSend={option => console.log('Sending SOS alert:', option)}
             translations={t.sosModal}
+          />
+        </div>
+      )}
+
+      {/* Directions Modal */}
+      {showDirectionsModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <DirectionsModal
+            onClose={() => setShowDirectionsModal(false)}
+            language={selectedLanguage}
           />
         </div>
       )}
