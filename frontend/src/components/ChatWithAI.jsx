@@ -1,86 +1,101 @@
-import React, { useState } from "react";
+// frontend/src/components/ChatWithAI.jsx
+import { useState } from 'react';
+import { uploadImage, sendChatMessage, checkHealth } from '../services/api';
 
-export default function ChatWithAI({ image, onClose }) {
-  const [messages, setMessages] = useState([
-    { role: "ai", text: "Hello! I see you've uploaded a photo. How can I help you today?" }
-  ]);
-  const [input, setInput] = useState("");
+const ChatWithAI = ({ imageData }) => {
+  const [message, setMessage] = useState('');
+  const [conversation, setConversation] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState(null);
 
-  // Replace this with your real API call
-  async function fakeAIReply(userMsg) {
-    return new Promise((resolve) =>
-      setTimeout(() => resolve("I'm RKioskAI. Thanks for your message! (Connect to your backend here.)"), 1200)
-    );
-  }
+  const checkApiHealth = async () => {
+    try {
+      const isHealthy = await checkHealth();
+      if (!isHealthy) {
+        throw new Error('API is not available');
+      }
+      return true;
+    } catch (error) {
+      console.error('API Health Check Failed:', error);
+      setApiError('Unable to connect to the server. Please try again later.');
+      return false;
+    }
+  };
 
-  async function handleSend(e) {
-    e.preventDefault();
-    if (!input.trim()) return;
-    const userMessage = { role: "user", text: input };
-    setMessages((prev) => [...prev, userMessage]);
-    setInput("");
+  const handleSendMessage = async () => {
+    if (!message.trim()) return;
+    
     setIsLoading(true);
+    setApiError(null);
+    const userMessage = { role: 'user', content: message };
+    setConversation(prev => [...prev, userMessage]);
+    setMessage('');
 
-    // Replace with your real OpenAI or backend call:
-    const aiText = await fakeAIReply(input);
+    try {
+      // Check API health before proceeding
+      const isApiHealthy = await checkApiHealth();
+      if (!isApiHealthy) return;
 
-    setMessages((prev) => [...prev, { role: "ai", text: aiText }]);
-    setIsLoading(false);
-  }
+      // If there's an image, upload it first
+      let imagePath = null;
+      if (imageData) {
+        const blob = await fetch(imageData).then(r => r.blob());
+        const file = new File([blob], 'captured-image.png', { type: 'image/png' });
+        const uploadResponse = await uploadImage(file);
+        imagePath = uploadResponse.imagePath;
+      }
+
+      // Send chat message
+      const response = await sendChatMessage(message, imagePath);
+      setConversation(prev => [...prev, { role: 'assistant', content: response.reply }]);
+    } catch (error) {
+      console.error('Error:', error);
+      if (!apiError) { // Only set error if not already set by checkApiHealth
+        setApiError('Failed to send message. Please try again.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="absolute inset-0 bg-black bg-opacity-50" />
-      <div className="relative bg-white p-8 rounded-xl shadow-lg max-w-lg w-full flex flex-col items-center">
-        <h3 className="text-2xl font-bold mb-4">Chat with AI</h3>
-        {image && <img src={image} alt="Captured" className="w-full max-w-xs rounded mb-6" />}
-        <div className="w-full max-h-56 overflow-y-auto mb-4 bg-gray-50 rounded p-3 space-y-2">
-          {messages.map((msg, idx) => (
-            <div key={idx} className={msg.role === "user" ? "text-right" : "text-left"}>
-              <span
-                className={`inline-block px-3 py-2 rounded ${
-                  msg.role === "user"
-                    ? "bg-blue-100 text-blue-900"
-                    : "bg-gray-200 text-gray-800"
-                }`}
-              >
-                {msg.text}
-              </span>
-            </div>
-          ))}
-          {isLoading && (
-            <div className="text-left">
-              <span className="inline-block px-3 py-2 rounded bg-gray-200 text-gray-500">
-                AI is typing…
-              </span>
-            </div>
-          )}
-        </div>
-        <form onSubmit={handleSend} className="w-full flex gap-2">
-          <input
-            type="text"
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            className="flex-1 px-3 py-2 rounded border border-gray-300 focus:outline-none"
-            placeholder="Type your message…"
-            disabled={isLoading}
-          />
-          <button
-            type="submit"
-            disabled={!input.trim() || isLoading}
-            className="bg-blue-500 text-white px-4 py-2 rounded font-semibold disabled:opacity-60"
+    <div className="chat-container">
+      {apiError && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+          {apiError} 
+          <button 
+            onClick={() => setApiError(null)} 
+            className="ml-2 text-red-700 font-bold"
           >
-            Send
+            ×
           </button>
-        </form>
-        <button
-          className="mt-6 px-6 py-2 bg-gray-200 rounded-lg font-semibold"
-          onClick={onClose}
+        </div>
+      )}
+      <div className="messages">
+        {conversation.map((msg, index) => (
+          <div key={index} className={`message ${msg.role}`}>
+            {msg.content}
+          </div>
+        ))}
+      </div>
+      <div className="input-area">
+        <input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+          placeholder="Type your message..."
+          disabled={isLoading}
+        />
+        <button 
+          onClick={handleSendMessage} 
+          disabled={isLoading || !message.trim()}
         >
-          Close Chat
+          {isLoading ? 'Sending...' : 'Send'}
         </button>
       </div>
     </div>
   );
-}
+};
+
+export default ChatWithAI;
