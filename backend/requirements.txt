@@ -5,3 +5,9 @@ requests
 PyPDF2
 python-dotenv
 llama-api-client
+pytesseract
+sentence-transformers
+pdfplumber
+python-docx
+langdetect
+reportlab
