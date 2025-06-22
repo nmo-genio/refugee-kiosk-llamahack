@@ -265,17 +265,17 @@ def chatWithLLAMA(propmt, **kwargs):
             }
         )
 
-    messages.append(
-        {
-            "role": "user",
-            "content": [
-                {
-                    "type": "text",
-                    "text": f"{semantic_search(propmt)}",
-                },
-            ],
-        }
-    )
+    # messages.append(
+    #     {
+    #         "role": "user",
+    #         "content": [
+    #             {
+    #                 "type": "text",
+    #                 "text": f"{semantic_search(propmt)}",
+    #             },
+    #         ],
+    #     }
+    # )
 
     if "PreviousMessages" in kwargs:
         previous_messages = kwargs["PreviousMessages"]

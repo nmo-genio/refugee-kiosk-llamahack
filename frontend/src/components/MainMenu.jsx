@@ -348,6 +348,13 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
     };
   }, []);
 
+  // Ensure handleCameraAccess is called when the modal is opened
+  useEffect(() => {
+    if (showCameraModal) {
+      handleCameraAccess();
+    }
+  }, [showCameraModal]);
+
   // Modal states
   const [showSOSModal, setShowSOSModal] = useState(false);
   const [showDirectionsModal, setShowDirectionsModal] = useState(false);
@@ -376,13 +383,13 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
   // Get all page content for read-aloud
   const getPageContent = useCallback(() => {
     const content = [];
-    
+
     // Add welcome message
     if (t.welcome) content.push(t.welcome);
-    
+
     // Add map title
     if (t.mapTitle) content.push(t.mapTitle);
-    
+
     // Add button descriptions
     if (t.buttons) {
       Object.values(t.buttons).forEach(button => {
@@ -394,9 +401,25 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
         }
       });
     }
-    
+
     return content.filter(Boolean); // Remove any empty strings
   }, [t]);
+
+  // Capture image from video
+  const handleCapture = () => {
+    if (videoRef.current && canvasRef.current) {
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const dataUrl = canvas.toDataURL('image/png');
+      setCapturedImage(dataUrl);
+      closeCamera();
+      setShowChatModal(true);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-50 to-white p-4">
@@ -405,7 +428,7 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
         <h1 className="text-3xl font-bold text-blue-800">
           {t.welcome}
         </h1>
-        <ReadAloudButton 
+        <ReadAloudButton
           text={getPageContent()}
           language={langCode}
           className="ml-4"
@@ -535,25 +558,7 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
               {!cameraError && (
                 <>
                   <button
-                    onClick={() => {
-                      if (videoRef.current && canvasRef.current) {
-                        const video = videoRef.current;
-                        const canvas = canvasRef.current;
-                        canvas.width = video.videoWidth;
-                        canvas.height = video.videoHeight;
-                        const ctx = canvas.getContext("2d");
-                        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-                        const dataUrl = canvas.toDataURL("image/png");
-                        // Stop all video tracks before closing
-                        if (videoRef.current && videoRef.current.srcObject) {
-                          videoRef.current.srcObject.getTracks().forEach(track => track.stop());
-                          videoRef.current.srcObject = null;
-                        }
-                        setCapturedImage(dataUrl);
-                        closeCamera();
-                        setShowChatModal(true);
-                      }
-                    }}
+                    onClick={handleCapture}
                     className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
                   >
                     Capture
@@ -589,9 +594,9 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
 
       {/* Chat Modal */}
       {showChatModal && capturedImage && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto">
           <div className="absolute inset-0 bg-black bg-opacity-50" />
-          <div className="relative bg-white p-8 rounded-xl shadow-lg max-w-lg w-full flex flex-col items-center">
+          <div className="relative bg-white p-8 rounded-xl shadow-lg max-w-lg w-full flex flex-col items-center overflow-auto max-h-[90vh]">
             <h3 className="text-2xl font-bold mb-4">RKioskAI</h3>
             <img src={capturedImage} alt="Captured" className="w-full max-w-xs rounded mb-6" />
             <div className="bg-gray-100 rounded p-4 mb-4 w-full text-center text-gray-600">

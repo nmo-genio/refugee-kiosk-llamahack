@@ -1,12 +1,20 @@
 // frontend/src/components/ChatWithAI.jsx
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { uploadImage, sendChatMessage, checkHealth } from '../services/api';
 
-const ChatWithAI = ({ imageData }) => {
+const ChatWithAI = ({ image, selectedLanguage, sessionId, onClose }) => {
   const [message, setMessage] = useState('');
   const [conversation, setConversation] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState(null);
+  const uploadedImage = useRef(null);
+
+  useEffect(() => {
+    if (image && image !== uploadedImage.current) {
+      uploadedImage.current = image;
+      handleImageUpload();
+    }
+  }, [image]);
 
   const checkApiHealth = async () => {
     try {
@@ -14,11 +22,40 @@ const ChatWithAI = ({ imageData }) => {
       if (!isHealthy) {
         throw new Error('API is not available');
       }
-      return true;
+      return true;  
     } catch (error) {
       console.error('API Health Check Failed:', error);
       setApiError('Unable to connect to the server. Please try again later.');
       return false;
+    }
+  };
+
+  const handleImageUpload = async () => {
+    if (isLoading) return; // Prevent multiple calls
+    setIsLoading(true);
+    setApiError(null);
+
+    try {
+      const isApiHealthy = await checkApiHealth();
+      if (!isApiHealthy) {
+        uploadedImage.current = null; // Allow retry
+        return;
+      }
+
+      const blob = await fetch(image).then((r) => r.blob());
+      const file = new File([blob], 'captured-image.png', { type: 'image/png' });
+      const response = await uploadImage(file, selectedLanguage.code); // Pass language code
+
+      setConversation((prev) => [
+        ...prev,
+        { role: 'assistant', content: response.reply },
+      ]);
+    } catch (error) {
+      console.error('Image upload failed:', error);
+      setApiError('Failed to upload image. Please try again.');
+      uploadedImage.current = null; // Allow retry
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -27,32 +64,27 @@ const ChatWithAI = ({ imageData }) => {
 
     setIsLoading(true);
     setApiError(null);
-    const userMessage = { role: 'user', content: message };
-    setConversation(prev => [...prev, userMessage]);
+    const userMessage = { role: 'user', content: message.trim() };
+    setConversation((prev) => [...prev, userMessage]);
     setMessage('');
 
     try {
-      // Check API health before proceeding
       const isApiHealthy = await checkApiHealth();
       if (!isApiHealthy) return;
 
-      // If there's an image, upload it first
-      let imagePath = null;
-      if (imageData) {
-        const blob = await fetch(imageData).then(r => r.blob());
-        const file = new File([blob], 'captured-image.png', { type: 'image/png' });
-        const uploadResponse = await uploadImage(file);
-        imagePath = uploadResponse.imagePath;
-      }
+      const response = await sendChatMessage(
+        userMessage.content,
+        selectedLanguage,
+        sessionId
+      );
 
-      // Send chat message
-      const response = await sendChatMessage(message, imagePath);
-      setConversation(prev => [...prev, { role: 'assistant', content: response.reply }]);
+      setConversation((prev) => [
+        ...prev,
+        { role: 'assistant', content: response.reply },
+      ]);
     } catch (error) {
-      console.error('Error:', error);
-      if (!apiError) { // Only set error if not already set by checkApiHealth
-        setApiError('Failed to send message. Please try again.');
-      }
+      console.error('Error sending message:', error);
+      setApiError('Failed to send message. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -94,6 +126,12 @@ const ChatWithAI = ({ imageData }) => {
           {isLoading ? 'Sending...' : 'Send'}
         </button>
       </div>
+      <button
+        onClick={onClose}
+        className="mt-4 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+      >
+        Close Chat
+      </button>
     </div>
   );
 };
