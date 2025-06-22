@@ -6,6 +6,7 @@ const translations = {
     welcome: 'Welcome',
     mapTitle: 'Refugee Camp Map',
     backButton: 'Back to Language Selection',
+    endSession: 'End Session',
     buttons: {
       docs: { title: 'Docs', description: 'Translate or fill your documents' },
       sos: { title: 'SOS', description: 'Send an emergency alert' },
@@ -16,6 +17,7 @@ const translations = {
     welcome: 'Bienvenido',
     mapTitle: 'Mapa del Campo de Refugiados',
     backButton: 'Volver a la selección de idioma',
+    endSession: 'Finalizar Sesión',
     buttons: {
       docs: { title: 'Documentos', description: 'Traducir o completar sus documentos' },
       sos: { title: 'SOS', description: 'Enviar una alerta de emergencia' },
@@ -26,6 +28,7 @@ const translations = {
     welcome: 'स्वागत है',
     mapTitle: 'शरणार्थी शिविर का नक्शा',
     backButton: 'भाषा चयन पर वापस जाएं',
+    endSession: 'सत्र समाप्त करें',
     buttons: {
       docs: { title: 'दस्तावेज़', description: 'अपने दस्तावेज़ों का अनुवाद या भरें' },
       sos: { title: 'एसओएस', description: 'आपातकालीन चेतावनी भेजें' },
@@ -36,6 +39,7 @@ const translations = {
     welcome: 'Bem-vindo',
     mapTitle: 'Mapa do Campo de Refugiados',
     backButton: 'Voltar para a seleção de idioma',
+    endSession: 'Encerrar Sessão',
     buttons: {
       docs: { title: 'Documentos', description: 'Traduzir ou preencher seus documentos' },
       sos: { title: 'SOS', description: 'Enviar alerta de emergência' },
@@ -46,6 +50,7 @@ const translations = {
     welcome: '欢迎',
     mapTitle: '难民营地图',
     backButton: '返回语言选择',
+    endSession: '结束会话',
     buttons: {
       docs: { title: '文件', description: '翻译或填写您的文件' },
       sos: { title: '紧急求助', description: '发送紧急警报' },
@@ -56,6 +61,7 @@ const translations = {
     welcome: 'Добро пожаловать',
     mapTitle: 'Карта лагеря беженцев',
     backButton: 'Вернуться к выбору языка',
+    endSession: 'Завершить сеанс',
     buttons: {
       docs: { title: 'Документы', description: 'Перевести или заполнить ваши документы' },
       sos: { title: 'SOS', description: 'Отправить сигнал бедствия' },
@@ -66,6 +72,7 @@ const translations = {
     welcome: 'Bun venit',
     mapTitle: 'Harta Taberei de Refugiați',
     backButton: 'Înapoi la selectarea limbii',
+    endSession: 'Încheiați sesiunea',
     buttons: {
       docs: { title: 'Documente', description: 'Traduceți sau completați documentele' },
       sos: { title: 'SOS', description: 'Trimiteți o alertă de urgență' },
@@ -76,6 +83,7 @@ const translations = {
     welcome: 'Welkom',
     mapTitle: 'Vlugtelingkamp Kaart',
     backButton: 'Terug na Taalkeuse',
+    endSession: 'Beëindig Sessie',
     buttons: {
       docs: { title: 'Dokumente', description: 'Vertaal of vul u dokumente in' },
       sos: { title: 'SOS', description: 'Stuur \'n noodwaarskuwing' },
@@ -86,6 +94,7 @@ const translations = {
     welcome: 'مرحباً',
     mapTitle: 'خريطة مخيم اللاجئين',
     backButton: 'العودة إلى اختيار اللغة',
+    endSession: 'إنهاء الجلسة',
     buttons: {
       docs: { title: 'مستندات', description: 'ترجمة أو تعبئة مستنداتك' },
       sos: { title: 'نجدة', description: 'إرسال تنبيه طوارئ' },
@@ -96,6 +105,7 @@ const translations = {
     welcome: 'Καλώς ήρθατε',
     mapTitle: 'Χάρτης του Προσφυγικού Καταυλισμού',
     backButton: 'Επιστροφή στην επιλογή γλώσσας',
+    endSession: 'Τέλος Συνεδρίας',
     buttons: {
       docs: { title: 'Έγγραφα', description: 'Μεταφράστε ή συμπληρώστε τα έγγραφά σας' },
       sos: { title: 'SOS', description: 'Αποστολή ειδοποίησης έκτακτης ανάγκης' },
@@ -106,6 +116,7 @@ const translations = {
     welcome: 'Ласкаво просимо',
     mapTitle: 'Мапа табору біженців',
     backButton: 'Повернутися до вибору мови',
+    endSession: 'Завершити сеанс',
     buttons: {
       docs: { title: 'Документи', description: 'Переклад або заповнення ваших документів' },
       sos: { title: 'SOS', description: 'Надіслати екстрене повідомлення' },
@@ -116,6 +127,7 @@ const translations = {
     welcome: 'Bienvenue',
     mapTitle: 'Carte du Camp de Réfugiés',
     backButton: 'Retour à la sélection de la langue',
+    endSession: 'Terminer la session',
     buttons: {
       docs: { title: 'Documents', description: 'Traduire ou remplir vos documents' },
       sos: { title: 'SOS', description: 'Envoyer une alerte d\'urgence' },
@@ -138,72 +150,94 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-50 to-white p-4">
-      {/* Back Button */}
-      <button 
-        onClick={onBack}
-        className="self-start mb-6 px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-800 rounded-lg transition-colors flex items-center"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 ${isRTL ? 'ml-2' : 'mr-2'} transform ${isRTL ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="currentColor">
-          <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
-        </svg>
-        {t.backButton}
-      </button>
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-blue-50 to-white overflow-hidden">
+      {/* Main Content Area with Scroll */}
+      <div className="flex-1 overflow-y-auto p-4 pb-24">
+        <div className="max-w-4xl mx-auto">
+          {/* Back Button */}
+          <div className="mb-6">
+            <button 
+              onClick={onBack}
+              className="px-4 py-2 bg-blue-100 hover:bg-blue-200 text-blue-800 rounded-lg transition-colors flex items-center text-sm sm:text-base"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className={`h-5 w-5 ${isRTL ? 'ml-2' : 'mr-2'} transform ${isRTL ? 'rotate-180' : ''}`} viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+              </svg>
+              {t.backButton}
+            </button>
+          </div>
 
-      {/* Map Section */}
-      <div className="w-full max-w-4xl bg-white rounded-xl shadow-lg p-6 mb-8">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center" dir={textDirection}>
-          {t.mapTitle}
-        </h2>
-        
-        <div className="w-full h-64 md:h-96 bg-gray-100 rounded-lg overflow-hidden shadow-inner">
-          <iframe
-            title="Diavata Refugee Camp Map"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3089.0537532424364!2d22.8609314!3d40.7011359!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14a8308f3226c0c1%3A0x30a296c1630ac937!2sRefugee%20Camp%20Anagnostopoulou!5e0!3m2!1sen!2sus!4v1719037016825!5m2!1sen!2sus"
-            width="100%"
-            height="100%"
-            style={{ border: 0 }}
-            allowFullScreen=""
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            className="rounded-lg"
-          />
+          {/* Map Section */}
+          <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 mb-6">
+            <h2 className="text-xl sm:text-2xl font-semibold text-gray-800 mb-4 text-center" dir={textDirection}>
+              {t.mapTitle}
+            </h2>
+            
+            <div className="w-full h-56 sm:h-80 md:h-96 bg-gray-100 rounded-lg overflow-hidden shadow-inner">
+              <iframe
+                title="Diavata Refugee Camp Map"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3089.0537532424364!2d22.8609314!3d40.7011359!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14a8308f3226c0c1%3A0x30a296c1630ac937!2sRefugee%20Camp%20Anagnostopoulou!5e0!3m2!1sen!2sus!4v1719037016825!5m2!1sen!2sus"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="rounded-lg"
+              />
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6" dir={textDirection}>
+            {[
+              { 
+                id: 'docs', 
+                icon: '📄',
+                ...t.buttons.docs
+              },
+              { 
+                id: 'sos', 
+                icon: '🆘',
+                ...t.buttons.sos
+              },
+              { 
+                id: 'family', 
+                icon: '👨‍👩‍👧‍👦',
+                ...t.buttons.family
+              }
+            ].map((button) => (
+              <button
+                key={button.id}
+                onClick={() => handleButtonClick(button.id)}
+                className="flex flex-col items-center justify-center p-4 sm:p-6 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-200 hover:bg-blue-50 border border-gray-100"
+              >
+                <span className="text-4xl sm:text-5xl mb-2 sm:mb-3">{button.icon}</span>
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-1 text-center" dir={textDirection}>
+                  {button.title}
+                </h3>
+                <p className="text-sm sm:text-base text-gray-500 text-center" dir={textDirection}>
+                  {button.description}
+                </p>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
-
-      {/* Action Buttons */}
-      <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6" dir={textDirection}>
-        {[
-          { 
-            id: 'docs', 
-            icon: '📄',
-            ...t.buttons.docs
-          },
-          { 
-            id: 'sos', 
-            icon: '🆘',
-            ...t.buttons.sos
-          },
-          { 
-            id: 'family', 
-            icon: '👨‍👩‍👧‍👦',
-            ...t.buttons.family
-          }
-        ].map((button) => (
+      
+      {/* End Session Button - Fixed to bottom */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-3 px-4 shadow-lg">
+        <div className="max-w-4xl mx-auto flex justify-end">
           <button
-            key={button.id}
-            onClick={() => handleButtonClick(button.id)}
-            className="flex flex-col items-center justify-center p-8 min-h-[140px] bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 hover:bg-blue-50 border-2 border-transparent hover:border-blue-200"
+            onClick={() => window.location.reload()}
+            className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center text-sm sm:text-base"
           >
-            <span className="text-5xl mb-3">{button.icon}</span>
-            <h3 className="text-2xl font-semibold text-gray-800 mb-1" dir={textDirection}>
-              {button.title}
-            </h3>
-            <p className="text-gray-500 text-base text-center" dir={textDirection}>
-              {button.description}
-            </p>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 sm:h-5 sm:w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clipRule="evenodd" />
+            </svg>
+            <span>{t.endSession}</span>
           </button>
-        ))}
+        </div>
       </div>
     </div>
   );
