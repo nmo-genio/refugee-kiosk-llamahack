@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import SOSModal from './SOSModal';
 import ChatWithAI from './ChatWithAI';
 import DirectionsModal from './DirectionsModal';
+import ReadAloudButton from './ReadAloudButton';
 
 
 // All translations for supported languages
@@ -372,8 +373,46 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
     }
   };
 
+  // Get all page content for read-aloud
+  const getPageContent = useCallback(() => {
+    const content = [];
+    
+    // Add welcome message
+    if (t.welcome) content.push(t.welcome);
+    
+    // Add map title
+    if (t.mapTitle) content.push(t.mapTitle);
+    
+    // Add button descriptions
+    if (t.buttons) {
+      Object.values(t.buttons).forEach(button => {
+        if (button.title && button.title.trim()) {
+          content.push(button.title);
+        }
+        if (button.description && button.description.trim()) {
+          content.push(button.description);
+        }
+      });
+    }
+    
+    return content.filter(Boolean); // Remove any empty strings
+  }, [t]);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-50 to-white p-4">
+      {/* Global Read Aloud Button */}
+      <div className="w-full max-w-4xl flex justify-between items-center mb-4">
+        <h1 className="text-3xl font-bold text-blue-800">
+          {t.welcome}
+        </h1>
+        <ReadAloudButton 
+          text={getPageContent()}
+          language={langCode}
+          className="ml-4"
+          showStopButton={true}
+        />
+      </div>
+
       {/* Back Button */}
       <button 
         onClick={onBack}
