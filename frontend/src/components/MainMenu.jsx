@@ -7,7 +7,7 @@ const translations = {
     mapTitle: 'Refugee Camp Map',
     backButton: 'Back to Language Selection',
     buttons: {
-      docs: { title: 'Docs', description: 'Translate or fill your documents' },
+      docs: { title: 'Scan for Assistance', description: 'Take a photo of a form, note, or flyer' },
       sos: { title: 'SOS', description: 'Send an emergency alert' },
       family: { title: 'Find My Family', description: 'Help with tracing or contacting relatives' }
     }
@@ -109,7 +109,7 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
       {/* Action Buttons */}
       <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-6" dir={textDirection}>
         {[
-          { id: 'docs', icon: '📄', ...t.buttons.docs },
+          { id: 'docs', icon: '📷', ...t.buttons.docs },
           { id: 'sos', icon: '🆘', ...t.buttons.sos },
           { id: 'family', icon: '👨‍👩‍👧‍👦', ...t.buttons.family }
         ].map((button) => (
