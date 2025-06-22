@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import SOSModal from './SOSModal';
+
+
 // All translations for supported languages
 const translations = {
   en: {
@@ -8,7 +10,7 @@ const translations = {
     backButton: 'Back to Language Selection',
     buttons: {
       docs: { title: 'Scan for Assistance', description: 'Take a photo of a form, note, or flyer' },
-      sos: { title: '', description: 'Send an emergency alert' }, // Title removed as requested
+      sos: { title: '', description: 'Send an emergency alert' }, 
       family: { title: 'Find My Family', description: 'Help with tracing or contacting relatives' },
       endSession: { title: 'End Session', description: 'Return to language selection' }
     },
@@ -32,7 +34,7 @@ const translations = {
     backButton: 'Volver a la selección de idioma',
     buttons: {
       docs: { title: 'Escanear para Asistencia', description: 'Tome una foto de un formulario, nota o volante' },
-      sos: { title: '', description: 'Enviar una alerta de emergencia' }, // Title removed as requested
+      sos: { title: '', description: 'Enviar una alerta de emergencia' }, 
       family: { title: 'Encontrar a mi Familia', description: 'Ayuda para localizar o contactar familiares' },
       endSession: { title: 'Terminar Sesión', description: 'Volver a la selección de idioma' }
     },
@@ -56,7 +58,7 @@ const translations = {
     backButton: 'भाषा चयन पर वापस जाएं',
     buttons: {
       docs: { title: 'सहायता के लिए स्कैन करें', description: 'फॉर्म, नोट या फ्लायर की फोटो लें' },
-      sos: { title: '', description: 'आपातकालीन चेतावनी भेजें' }, // Title removed as requested
+      sos: { title: '', description: 'आपातकालीन चेतावनी भेजें' }, 
       family: { title: 'मेरा परिवार ढूंढें', description: 'रिश्तेदारों का पता लगाने या संपर्क करने में सहायता' },
       endSession: { title: 'सत्र समाप्त करें', description: 'भाषा चयन पर वापस जाएं' }
     },
@@ -80,7 +82,7 @@ const translations = {
     backButton: 'Voltar para a seleção de idioma',
     buttons: {
       docs: { title: 'Digitalizar para Assistência', description: 'Tire uma foto de um formulário, nota ou panfleto' },
-      sos: { title: '', description: 'Enviar alerta de emergência' }, // Title removed as requested
+      sos: { title: '', description: 'Enviar alerta de emergência' }, 
       family: { title: 'Encontrar Minha Família', description: 'Ajuda para localizar ou entrar em contato com parentes' },
       endSession: { title: 'Encerrar Sessão', description: 'Voltar para a seleção de idioma' }
     },
@@ -304,6 +306,11 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
   const isRTL = selectedLanguage?.dir === 'rtl';
   const textDirection = isRTL ? 'rtl' : 'ltr';
 
+  // Camera
+  const [capturedImage, setCapturedImage] = useState(null);
+  const [showChatModal, setShowChatModal] = useState(false);
+  const canvasRef = useRef(null);
+
   // Camera handling
   const handleCameraAccess = async () => {
     setCameraError(null);
@@ -475,14 +482,33 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
                 Close
               </button>
               {!cameraError && (
-                <button
-                  onClick={() => {
-                    alert('Document capture functionality will be implemented here');
-                  }}
-                  className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-                >
-                  Capture
-                </button>
+                <>
+                  <button
+                    onClick={() => {
+                      if (videoRef.current && canvasRef.current) {
+                        const video = videoRef.current;
+                        const canvas = canvasRef.current;
+                        canvas.width = video.videoWidth;
+                        canvas.height = video.videoHeight;
+                        const ctx = canvas.getContext("2d");
+                        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                        const dataUrl = canvas.toDataURL("image/png");
+                    // Stop all video tracks before closing
+                    if (videoRef.current && videoRef.current.srcObject) {
+                      videoRef.current.srcObject.getTracks().forEach(track => track.stop());
+                      videoRef.current.srcObject = null;
+                    }
+                    setCapturedImage(dataUrl);
+                    closeCamera();
+                    setShowChatModal(true);
+                      }
+                    }}
+                    className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                  >
+                    Capture
+                  </button>
+                  <canvas ref={canvasRef} style={{ display: "none" }} />
+                </>
               )}
             </div>
           </div>
@@ -499,6 +525,29 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
           />
   </div>
 )}
+
+         {/* Chat Modal */}
+      {showChatModal && capturedImage && (
+   <div className="fixed inset-0 z-50 flex items-center justify-center">
+     <div className="absolute inset-0 bg-black bg-opacity-50" />
+     <div className="relative bg-white p-8 rounded-xl shadow-lg max-w-lg w-full flex flex-col items-center">
+       <h3 className="text-2xl font-bold mb-4">RKioskAI</h3>
+       <img src={capturedImage} alt="Captured" className="w-full max-w-xs rounded mb-6" />
+       <div className="bg-gray-100 rounded p-4 mb-4 w-full text-center text-gray-600">
+         (AI chat will go here...)
+       </div>
+       <button
+         className="px-6 py-2 bg-blue-500 text-white rounded-lg font-semibold"
+         onClick={() => {
+           setShowChatModal(false);
+           setCapturedImage(null);
+         }}
+       >
+         Close Chat
+       </button>
+     </div>
+   </div>
+ )}
     </div>
   );
 };
