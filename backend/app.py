@@ -9,6 +9,7 @@ import shutil
 
 from llama_api import (
     chatWithLLAMA,
+    findDirectionsto,
     translateText,
     getFormDetails,
     getHandWrittenTextFromImage,
@@ -163,6 +164,18 @@ async def serve_image(image_name: str):
         return FileResponse(file_path)
     else:
         raise HTTPException(status_code=404, detail="Image not found")
+
+
+@app.get("/api/directions/")
+async def get_directions(destination: str, language: str = "en"):
+    try:
+        directions = findDirectionsto(destination)
+        translated_directions = translateText(directions, target_language=language)
+        return {"reply": translated_directions}
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Error fetching directions: {str(e)}"
+        )
 
 
 @app.post("/close-session")

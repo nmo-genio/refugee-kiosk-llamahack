@@ -295,5 +295,61 @@ def chatWithLLAMA(propmt, **kwargs):
     )
 
 
+def findDirectionsto(location):
+    image_path = os.getcwd() + "/testImages/SatelliteMap.png"
+    base64_image = image_to_base64(image_path)
+
+    messages = [
+        {
+            "role": "system",
+            "content": [
+                {
+                    "type": "text",
+                    "text": """You will be helping refugees by providing directions to various locations within the Diavata Refugee Camp in Greece based on the Satellite map attached.
+                                Here is what you need to do:
+                                1. Use the satellite map to predict the position of the location.
+                                2. Find the path to the location from the main entrance of the camp from the red point (the current location).
+                                3. Use the scale on the bottom right of the map to estimate the distances.
+                                4. Provide the directions in a simple, accurate, and contextually appropriate manner.
+                                5. Do not return any other information or text such as 'The directions are: '.
+                                example output:
+                                Walk 200m north to the main path. Turn right and continue for 150m. The food will be on your left.
+                                """,
+                },
+            ],
+        },
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "image_url",
+                    "image_url": {
+                        "url": f"data:image/{image_path.split('.')[-1]};base64,{base64_image}"
+                    },
+                },
+            ],
+        },
+        {
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": f"Please provide directions to {location}.",
+                },
+            ],
+        },
+    ]
+
+    response = client.chat.completions.create(
+        model="Llama-4-Maverick-17B-128E-Instruct-FP8",
+        messages=messages,
+        response_format={
+            "type": "text",
+        },
+    )
+
+    return response.completion_message.content.text.strip()
+
+
 if __name__ == "__main__":
-    pass
+    print(findDirectionsto("play ground"))

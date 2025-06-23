@@ -23,9 +23,21 @@ code {
 }
 
 .messages {
+  width: 800px;
   flex: 1;
   overflow-y: auto;
   padding: 1rem;
+  max-height: 400px;
+  /* Limit height */
+}
+
+/* Add styles to make chat reply scrollable and limit its height */
+.messages {
+  width: 800px;
+  max-height: 400px;
+  /* Limit height */
+  overflow-y: auto;
+  /* Enable scrolling */
 }
 
 .message {
@@ -123,4 +135,10 @@ code {
     opacity: 1;
     transform: translate(-50%, 0);
   }
+}
+
+/* Adjust the width of the chat modal for better display */
+.relative.bg-white.p-8.rounded-xl.shadow-lg.max-w-lg.w-full.flex.flex-col.items-center {
+  max-width: 800px;
+  /* Increase width */
 }

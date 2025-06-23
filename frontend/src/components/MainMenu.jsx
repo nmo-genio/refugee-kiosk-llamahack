@@ -455,7 +455,7 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
         <div className="w-full h-64 md:h-96 bg-gray-100 rounded-lg overflow-hidden shadow-inner">
           <iframe
             title="Diavata Refugee Camp Map"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3089.0537532424364!2d22.8609314!3d40.7011359!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14a8308f3226c0c1%3A0x30a296c1630ac937!2sRefugee%20Camp%20Anagnostopoulou!5e0!3m2!1sen!2sus!4v1719037016825!5m2!1sen!2sus&maptype=satellite"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3089.0537532424364!2d22.8609314!3d40.7011359!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14a8308f3226c0c1%3A0x30a296c1630ac937!2sRefugee%20Camp%20Anagnostopoulou!5e0!3m2!1sen!2sus!4v1719037016825!5m2!1sen!2sus"
             width="100%"
             height="100%"
             style={{ border: 0 }}
@@ -594,9 +594,9 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
 
       {/* Chat Modal */}
       {showChatModal && capturedImage && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black bg-opacity-50" />
-          <div className="relative bg-white p-8 rounded-xl shadow-lg max-w-lg w-full flex flex-col items-center overflow-auto max-h-[90vh]">
+          <div className="relative bg-white p-8 rounded-xl shadow-lg max-w-lg w-full flex flex-col items-center">
             <h3 className="text-2xl font-bold mb-4">RKioskAI</h3>
             <img src={capturedImage} alt="Captured" className="w-full max-w-xs rounded mb-6" />
             <div className="bg-gray-100 rounded p-4 mb-4 w-full text-center text-gray-600">
