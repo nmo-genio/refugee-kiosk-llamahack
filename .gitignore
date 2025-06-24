@@ -51,6 +51,8 @@ coverage/
 # Production
 build/
 
+backend/temp/
+
 # Misc
 .DS_Store
 .env.local

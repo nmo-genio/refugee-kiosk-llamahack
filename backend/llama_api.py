@@ -13,7 +13,6 @@ from sematicSearch import semantic_search
 
 load_dotenv()
 api_key = os.environ.get("LLAMA_API_KEY")
-print(f"\n\n\nUsing Llama API Key: {api_key} with a length of {len(api_key)}\n\n\n")
 client = LlamaAPIClient(api_key=api_key)
 
 
