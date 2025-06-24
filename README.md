@@ -3,8 +3,8 @@
 **AI-powered, multilingual digital kiosk for refugees and disaster survivors.**  
 Built for the Llama 4 Hackathon, Refugee Kiosk provides instant document/photo translation, step-by-step form assistance, and privacy-focused, accessible help for those in need.
 
-**🔗 [Live Demo](https://youtu.be/WmEEAMDMiJo)**
----
+## Check out the demo:
+![Live Demo](https://img.youtube.com/vi/WmEEAMDMiJo/hqdefault.jpg)](https://youtu.be/WmEEAMDMiJo)
 
 ## 🚀 Overview
 
