@@ -609,7 +609,7 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
                 }}
               />
             </div>
-            <button
+            {/* <button
               className="px-6 py-2 bg-blue-500 text-white rounded-lg font-semibold"
               onClick={() => {
                 setShowChatModal(false);
@@ -617,7 +617,7 @@ const MainMenu = ({ onBack, selectedLanguage }) => {
               }}
             >
               Close Chat
-            </button>
+            </button> */}
           </div>
         </div>
       )}
