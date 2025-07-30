@@ -76,7 +76,7 @@ const ChatWithAI = ({ image, selectedLanguage, sessionId, onClose }) => {
 
       const response = await sendChatMessage(
         userMessage.content,
-        selectedLanguage,
+        selectedLanguage.text,
         sessionId
       );
 

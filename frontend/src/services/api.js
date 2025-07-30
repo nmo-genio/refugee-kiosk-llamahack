@@ -47,8 +47,8 @@ export const sendChatMessage = async (message, language) => {
         'Session-ID': getOrCreateSessionId(),
       },
       body: JSON.stringify({
-        language,
         prompt: message,
+        language,
       }),
     });
 

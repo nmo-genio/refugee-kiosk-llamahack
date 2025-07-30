@@ -279,7 +279,8 @@ def chatWithLLAMA(propmt, **kwargs):
 
     if "PreviousMessages" in kwargs:
         previous_messages = kwargs["PreviousMessages"]
-        messages.insert(0, previous_messages)
+        # messages.insert(0, previous_messages)
+        messages[0:0] = previous_messages
 
     response = client.chat.completions.create(
         model="Llama-4-Maverick-17B-128E-Instruct-FP8",
